@@ -13,7 +13,7 @@ import java.util.HashMap;
 @Component
 public class InMemoryUserStorage implements UserStorage {
 
-    private HashMap<Integer, User> db = new HashMap<>();
+    private final HashMap<Integer, User> db = new HashMap<>();
     private Integer id = 0;
 
     @Override
