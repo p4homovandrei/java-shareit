@@ -13,8 +13,8 @@ import java.util.HashMap;
 @Component
 public class InMemoryUserStorage implements UserStorage {
 
-    HashMap<Integer, User> db = new HashMap<>();
-    Integer id = 0;
+    private HashMap<Integer, User> db = new HashMap<>();
+    private Integer id = 0;
 
     @Override
     public User create(User user) {
@@ -52,8 +52,7 @@ public class InMemoryUserStorage implements UserStorage {
     public User delete(Integer id) {
         log.info("delete user");
         if (db.containsKey(id)) {
-            db.remove(id);
-            return null;
+            return db.remove(id);
         } else throw new NoFoundException("Пользователь с id = " + id + "не найден!");
     }
 

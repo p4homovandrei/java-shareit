@@ -21,7 +21,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleDupliacteException(final DuplicateException e) {
+    public ErrorResponse handleDuplicateException(final DuplicateException e) {
         log.error(e.getMessage());
         return new ErrorResponse(
                 e.getMessage()

@@ -2,12 +2,15 @@ package ru.practicum.shareit.item.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemDtoCreate;
+import ru.practicum.shareit.item.dto.ItemDtoGet;
+import ru.practicum.shareit.item.dto.ItemDtoPatch;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemStorage;
 import ru.practicum.shareit.services.NoArgException;
 import ru.practicum.shareit.services.NoFoundException;
+import ru.practicum.shareit.user.dto.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
@@ -15,64 +18,64 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
+
 public class ItemServiceImpl implements ItemService {
 
     UserService userService;
     ItemStorage itemStorage;
 
-
     @Autowired
-    public ItemServiceImpl(ItemStorage itemStorage, UserService userService) {
-        this.itemStorage = itemStorage;
+    public ItemServiceImpl(UserService userService, ItemStorage itemStorage) {
         this.userService = userService;
+        this.itemStorage = itemStorage;
     }
 
-
     @Override
-    public Item create(Item item, String owner) {
+    public ItemDtoCreate create(ItemDtoCreate itemDtoCreate, String owner) {
         checkOwner(owner);
-        User user = userService.get(Integer.valueOf(owner));
+        Item item = ItemMapper.fromItemDtoCreate(itemDtoCreate);
+        User user = UserMapper.fromUserDtoGet(userService.get(Integer.valueOf(owner)));
         item.setOwner(user);
-        return itemStorage.create(item);
+        return ItemMapper.toItemDtoCreate(itemStorage.create(item));
     }
 
     @Override
-    public Item patch(Item item, String owner, Integer itemId) {
+    public ItemDtoPatch patch(ItemDtoPatch itemDtoPatch, String owner, Integer itemId) {
         checkOwner(owner);
+        Item item = ItemMapper.fromItemDtoPatch(itemDtoPatch);
         if (itemStorage.get(itemId).getOwner().getId().equals(Integer.valueOf(owner))) {
-            User user = userService.get(Integer.valueOf(owner));
-            return itemStorage.patch(item, itemId);
+            return ItemMapper.toItemDtoPatch(itemStorage.patch(item, itemId));
         } else throw new NoFoundException("Владелец предмета не совпадает с ID запроса на патч");
     }
 
     @Override
-    public ItemDto get(Integer itemId) {
+    public ItemDtoGet get(Integer itemId) {
         Item item = itemStorage.get(itemId);
-        return ItemMapper.toItemDto(item);
+        return ItemMapper.toItemDtoGet(item);
     }
 
     @Override
-    public List<ItemDto> getAllByOwner(String owner) {
+    public List<ItemDtoGet> getAllByOwner(String owner) {
         List<Item> list = itemStorage.getAllByOwner(owner);
-        List<ItemDto> listDto = new LinkedList<>();
+        List<ItemDtoGet> listDto = new LinkedList<>();
         if (!list.isEmpty()) {
             for (Item item : list) {
-                listDto.add(ItemMapper.toItemDto(item));
+                listDto.add(ItemMapper.toItemDtoGet(item));
             }
         }
         return listDto;
     }
 
     @Override
-    public List<ItemDto> search(String text) {
-        List<Item> findedList = new LinkedList();
-        List<ItemDto> dtoList = new LinkedList();
+    public List<ItemDtoGet> search(String text) {
+        List<Item> findedList = new LinkedList<>();
+        List<ItemDtoGet> dtoList = new LinkedList<>();
         if (text.isBlank()) {
             return dtoList;
         }
         itemStorage.getAll().forEach(item -> findedList.add(searchByName(text, item)));
         findedList.remove(null);
-        findedList.forEach(item -> dtoList.add(ItemMapper.toItemDto(item)));
+        findedList.forEach(item -> dtoList.add(ItemMapper.toItemDtoGet(item)));
         return dtoList;
     }
 

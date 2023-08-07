@@ -2,7 +2,9 @@ package ru.practicum.shareit.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.dto.UserDtoCreate;
+import ru.practicum.shareit.user.dto.UserDtoGet;
+import ru.practicum.shareit.user.dto.UserDtoPatch;
 import ru.practicum.shareit.user.service.UserService;
 
 import javax.validation.Valid;
@@ -15,32 +17,35 @@ import java.util.Collection;
 @RequestMapping(path = "/users")
 public class UserController {
 
-    @Autowired
     UserService userService;
 
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
     @PostMapping
-    public User create(@RequestBody @Valid User user) {
+    public UserDtoCreate create(@RequestBody @Valid UserDtoCreate user) {
         return userService.create(user);
     }
 
     @GetMapping("/{userId}")
-    public User get(@PathVariable("userId") String id) {
-        User user = userService.get(Integer.valueOf(id));
-        return user;
+    public UserDtoGet get(@PathVariable("userId") String id) {
+        return userService.get(Integer.valueOf(id));
     }
 
     @GetMapping
-    public Collection<User> getAll() {
+    public Collection<UserDtoGet> getAll() {
         return userService.getAll();
     }
 
     @PatchMapping("/{userId}")
-    public User patch(@PathVariable("userId") String id, @RequestBody User user) {
-        return userService.patch(Integer.valueOf(id), user);
+    public UserDtoPatch patch(@PathVariable("userId") String id, @RequestBody UserDtoPatch userDtoPatch) {
+        return userService.patch(Integer.valueOf(id), userDtoPatch);
     }
 
     @DeleteMapping("/{userId}")
-    public User delete(@PathVariable("userId") String id) {
+    public UserDtoGet delete(@PathVariable("userId") String id) {
         return userService.delete(Integer.valueOf(id));
     }
 }

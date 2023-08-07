@@ -5,22 +5,23 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Data
-public class ItemDto {
-    @NotBlank
-    Integer id;
-    @NotBlank
-    String name;
-    String description;
+public class ItemDtoGet {
     @NotNull
-    Boolean available;
+    private Integer id;
 
-    String request;
+    @NotBlank
+    private String name;
 
-    public ItemDto(Integer id, String name, String description, Boolean available) {
+    @NotBlank
+    private String description;
+
+    @NotNull
+    private Boolean available;
+
+    private String request;
+
+    public ItemDtoGet(Integer id, String name, String description, Boolean available) {
         this.id = id;
         this.name = name;
         this.description = description;
