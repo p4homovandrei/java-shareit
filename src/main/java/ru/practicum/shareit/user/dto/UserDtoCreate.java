@@ -19,10 +19,9 @@ public class UserDtoCreate {
         this.email = email;
         this.name = name;
     }
-    public UserDtoCreate(Integer id, String name ,String email) {
+    public UserDtoCreate(Integer id, String name, String email) {
         this.id = id;
         this.email = email;
         this.name = name;
     }
-
 }
