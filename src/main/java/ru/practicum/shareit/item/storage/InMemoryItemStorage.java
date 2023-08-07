@@ -13,8 +13,8 @@ import java.util.List;
 @Component
 public class InMemoryItemStorage implements ItemStorage {
 
-    HashMap<Integer, Item> db = new HashMap<>();
-    Integer id = 0;
+    private HashMap<Integer, Item> db = new HashMap<>();
+    private Integer id = 0;
 
     @Override
     public Item create(Item item) {
