@@ -5,13 +5,14 @@ import ru.practicum.shareit.user.model.User;
 import java.util.Collection;
 
 public interface UserStorage {
+
     User create(User user);
 
-    User get(Integer id);
+    User get(Long id);
 
-    User patch(Integer id, User user);
+    User patch(Long id, User user);
 
-    User delete(Integer id);
+    User delete(Long id);
 
     Collection<User> getAll();
 }

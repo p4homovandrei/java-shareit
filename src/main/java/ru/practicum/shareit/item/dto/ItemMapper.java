@@ -1,27 +1,10 @@
 package ru.practicum.shareit.item.dto;
 
-import org.springframework.stereotype.Component;
+import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.item.model.Item;
 
-@Component
+@UtilityClass
 public class ItemMapper {
-
-    public static Item fromItemDtoCreate(ItemDtoCreate itemDtoCreate) {
-        return new Item(
-                itemDtoCreate.getName(),
-                itemDtoCreate.getDescription(),
-                itemDtoCreate.getAvailable()
-        );
-    }
-
-    public static ItemDtoCreate toItemDtoCreate(Item item) {
-        return new ItemDtoCreate(
-                item.getId(),
-                item.getName(),
-                item.getDescription(),
-                item.getAvailable()
-        );
-    }
 
     public static Item fromItemDtoPatch(ItemDtoPatch itemDtoPatch) {
         return new Item(
@@ -32,17 +15,16 @@ public class ItemMapper {
         );
     }
 
-    public static ItemDtoPatch toItemDtoPatch(Item item) {
-        return new ItemDtoPatch(
-                item.getId(),
-                item.getName(),
-                item.getDescription(),
-                item.getAvailable()
+    public static Item fromItemDtoCreate(ItemDtoCreate itemDtoCreate) {
+        return new Item(
+                itemDtoCreate.getName(),
+                itemDtoCreate.getDescription(),
+                itemDtoCreate.getAvailable()
         );
     }
 
-    public static ItemDtoGet toItemDtoGet(Item item) {
-        return new ItemDtoGet(
+    public static ItemDto toItemDto(Item item) {
+        return new ItemDto(
                 item.getId(),
                 item.getName(),
                 item.getDescription(),

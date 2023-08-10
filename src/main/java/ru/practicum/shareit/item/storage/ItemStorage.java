@@ -7,9 +7,9 @@ import java.util.List;
 public interface ItemStorage {
     Item create(Item item);
 
-    Item patch(Item item, Integer itemId);
+    Item patch(Item item, Long itemId);
 
-    Item get(Integer itemId);
+    Item get(Long itemId);
 
     List<Item> getAllByOwner(String owner);
 

@@ -13,20 +13,20 @@ import java.util.HashMap;
 @Component
 public class InMemoryUserStorage implements UserStorage {
 
-    private final HashMap<Integer, User> db = new HashMap<>();
-    private Integer id = 0;
+    private final HashMap<Long, User> db = new HashMap<>();
+    private Long id = 0L;
 
     @Override
     public User create(User user) {
         log.info("Create User");
-        checkEmail(user, 0);
+        checkEmail(user, 0L);
         user.setId(getId());
         db.put(user.getId(), user);
         return user;
     }
 
     @Override
-    public User get(Integer id) {
+    public User get(Long id) {
         log.info("Get User id " + id);
         if (db.containsKey(id)) {
             return db.get(id);
@@ -34,7 +34,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User patch(Integer id, User user) {
+    public User patch(Long id, User user) {
         log.info("Patch user");
         checkEmail(user, id);
         if (db.containsKey(id)) {
@@ -49,7 +49,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User delete(Integer id) {
+    public User delete(Long id) {
         log.info("delete user");
         if (db.containsKey(id)) {
             return db.remove(id);
@@ -62,11 +62,11 @@ public class InMemoryUserStorage implements UserStorage {
         return db.values();
     }
 
-    public Integer getId() {
+    public Long getId() {
         return ++id;
     }
 
-    private void checkEmail(User user, Integer id) {
+    private void checkEmail(User user, Long id) {
         for (User u : db.values()) {
             if (u.getEmail().equals(user.getEmail())) {
                 if (id.equals(u.getId())) {

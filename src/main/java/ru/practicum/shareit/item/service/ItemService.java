@@ -1,19 +1,20 @@
 package ru.practicum.shareit.item.service;
 
 import ru.practicum.shareit.item.dto.ItemDtoCreate;
-import ru.practicum.shareit.item.dto.ItemDtoGet;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoPatch;
 
 import java.util.List;
 
 public interface ItemService {
-    public ItemDtoCreate create(ItemDtoCreate item, String owner);
 
-    ItemDtoPatch patch(ItemDtoPatch item, String owner, Integer integer);
+    ItemDto create(ItemDtoCreate item, String owner);
 
-    ItemDtoGet get(Integer valueOf);
+    ItemDto patch(ItemDtoPatch item, String owner, Long integer);
 
-    List<ItemDtoGet> getAllByOwner(String owner);
+    ItemDto get(Long valueOf);
 
-    List<ItemDtoGet> search(String text);
+    List<ItemDto> getAllByOwner(String owner);
+
+    List<ItemDto> search(String text);
 }

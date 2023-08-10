@@ -1,8 +1,11 @@
 package ru.practicum.shareit.user.dto;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.user.model.User;
 
+@UtilityClass
 public class UserMapper {
+
     public static User fromUserDtoCreate(UserDtoCreate userDtoCreate) {
         return new User(
                 userDtoCreate.getName(),
@@ -10,8 +13,8 @@ public class UserMapper {
         );
     }
 
-    public static UserDtoCreate toUserDtoCreate(User user) {
-        return new UserDtoCreate(
+    public static UserDto toUserDto(User user) {
+        return new UserDto(
                 user.getId(),
                 user.getName(),
                 user.getEmail()
@@ -25,27 +28,11 @@ public class UserMapper {
         );
     }
 
-    public static UserDtoPatch toUserDtoPatch(User user) {
-        return new UserDtoPatch(
-                user.getId(),
-                user.getName(),
-                user.getEmail()
-        );
-    }
-
-    public static User fromUserDtoGet(UserDtoGet userDtoGet) {
+    public static User fromUserDto(UserDto userDto) {
         return new User(
-                userDtoGet.getId(),
-                userDtoGet.getName(),
-                userDtoGet.getEmail()
-        );
-    }
-
-    public static UserDtoGet toUserDtoGet(User user) {
-        return new UserDtoGet(
-                user.getId(),
-                user.getName(),
-                user.getEmail()
+                userDto.getId(),
+                userDto.getName(),
+                userDto.getEmail()
         );
     }
 }

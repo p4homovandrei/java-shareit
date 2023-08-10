@@ -13,8 +13,9 @@ import java.util.List;
 @Component
 public class InMemoryItemStorage implements ItemStorage {
 
-    private final HashMap<Integer, Item> db = new HashMap<>();
-    private Integer id = 0;
+    private final HashMap<Long, Item> db = new HashMap<>();
+
+    private Long id = 0L;
 
     @Override
     public Item create(Item item) {
@@ -25,7 +26,7 @@ public class InMemoryItemStorage implements ItemStorage {
     }
 
     @Override
-    public Item patch(Item item, Integer itemId) {
+    public Item patch(Item item, Long itemId) {
         log.info("Patch item");
         if (db.containsKey(itemId)) {
             Item patchItem = db.get(itemId);
@@ -33,10 +34,6 @@ public class InMemoryItemStorage implements ItemStorage {
                 patchItem.setAvailable(item.getAvailable());
             if (item.getName() != null)
                 patchItem.setName(item.getName());
-            if (item.getOwner() != null)
-                patchItem.setOwner(item.getOwner());
-            if (item.getRequest() != null)
-                patchItem.setRequest(item.getRequest());
             if (item.getDescription() != null)
                 patchItem.setDescription(item.getDescription());
             db.put(itemId, patchItem);
@@ -45,7 +42,7 @@ public class InMemoryItemStorage implements ItemStorage {
     }
 
     @Override
-    public Item get(Integer itemId) {
+    public Item get(Long itemId) {
         if (db.containsKey(itemId)) {
             return db.get(itemId);
         } else throw new NoFoundException("предмет с ID = " + itemId + " не найден!");
@@ -55,7 +52,7 @@ public class InMemoryItemStorage implements ItemStorage {
     public List<Item> getAllByOwner(String owner) {
         List<Item> list = new LinkedList<Item>();
         for (Item item : db.values()) {
-            if (item.getOwner().getId().equals(Integer.valueOf(owner))) {
+            if (item.getOwner().getId().equals(Long.valueOf(owner))) {
                 list.add(item);
             }
         }
@@ -67,7 +64,7 @@ public class InMemoryItemStorage implements ItemStorage {
         return List.copyOf(db.values());
     }
 
-    public Integer getId() {
+    public Long getId() {
         return ++id;
     }
 

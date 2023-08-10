@@ -10,7 +10,8 @@ import ru.practicum.shareit.user.model.User;
 @Data
 @NoArgsConstructor
 public class Item {
-    private Integer id;
+
+    private Long id;
 
     private String name;
 
@@ -22,7 +23,7 @@ public class Item {
 
     private String request;
 
-    public Item(Integer id, String name, String description, Boolean available) {
+    public Item(Long id, String name, String description, Boolean available) {
         this.id = id;
         this.name = name;
         this.description = description;

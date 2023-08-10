@@ -8,8 +8,7 @@ import lombok.Data;
 @Data
 public class ItemDtoPatch {
 
-
-    private Integer id;
+    private Long id;
 
     private String name;
 
@@ -17,9 +16,7 @@ public class ItemDtoPatch {
 
     private Boolean available;
 
-    private String request;
-
-    public ItemDtoPatch(Integer id, String name, String description, Boolean available) {
+    public ItemDtoPatch(Long id, String name, String description, Boolean available) {
         this.id = id;
         this.name = name;
         this.description = description;

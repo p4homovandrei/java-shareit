@@ -2,8 +2,8 @@ package ru.practicum.shareit.item.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoCreate;
-import ru.practicum.shareit.item.dto.ItemDtoGet;
 import ru.practicum.shareit.item.dto.ItemDtoPatch;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
@@ -18,11 +18,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
-
 public class ItemServiceImpl implements ItemService {
 
-    UserService userService;
-    ItemStorage itemStorage;
+    private UserService userService;
+    private ItemStorage itemStorage;
 
     @Autowired
     public ItemServiceImpl(UserService userService, ItemStorage itemStorage) {
@@ -31,67 +30,60 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDtoCreate create(ItemDtoCreate itemDtoCreate, String owner) {
+    public ItemDto create(ItemDtoCreate itemDtoCreate, String owner) {
         checkOwner(owner);
         Item item = ItemMapper.fromItemDtoCreate(itemDtoCreate);
-        User user = UserMapper.fromUserDtoGet(userService.get(Integer.valueOf(owner)));
+        User user = UserMapper.fromUserDto(userService.get(Long.valueOf(owner)));
         item.setOwner(user);
-        return ItemMapper.toItemDtoCreate(itemStorage.create(item));
+        return ItemMapper.toItemDto(itemStorage.create(item));
     }
 
     @Override
-    public ItemDtoPatch patch(ItemDtoPatch itemDtoPatch, String owner, Integer itemId) {
+    public ItemDto patch(ItemDtoPatch itemDtoPatch, String owner, Long itemId) {
         checkOwner(owner);
         Item item = ItemMapper.fromItemDtoPatch(itemDtoPatch);
-        if (itemStorage.get(itemId).getOwner().getId().equals(Integer.valueOf(owner))) {
-            return ItemMapper.toItemDtoPatch(itemStorage.patch(item, itemId));
+        if (itemStorage.get(itemId).getOwner().getId().equals(Long.valueOf(owner))) {
+            return ItemMapper.toItemDto(itemStorage.patch(item, itemId));
         } else throw new NoFoundException("Владелец предмета не совпадает с ID запроса на патч");
     }
 
     @Override
-    public ItemDtoGet get(Integer itemId) {
+    public ItemDto get(Long itemId) {
         Item item = itemStorage.get(itemId);
-        return ItemMapper.toItemDtoGet(item);
+        return ItemMapper.toItemDto(item);
     }
 
     @Override
-    public List<ItemDtoGet> getAllByOwner(String owner) {
+    public List<ItemDto> getAllByOwner(String owner) {
         List<Item> list = itemStorage.getAllByOwner(owner);
-        List<ItemDtoGet> listDto = new LinkedList<>();
+        List<ItemDto> listDto = new LinkedList<>();
         if (!list.isEmpty()) {
             for (Item item : list) {
-                listDto.add(ItemMapper.toItemDtoGet(item));
+                listDto.add(ItemMapper.toItemDto(item));
             }
         }
         return listDto;
     }
 
     @Override
-    public List<ItemDtoGet> search(String text) {
+    public List<ItemDto> search(String text) {
         List<Item> findedList = new LinkedList<>();
-        List<ItemDtoGet> dtoList = new LinkedList<>();
+        List<ItemDto> dtoList = new LinkedList<>();
         if (text.isBlank()) {
             return dtoList;
         }
         itemStorage.getAll().forEach(item -> findedList.add(searchByName(text, item)));
-        findedList.remove(null);
-        findedList.forEach(item -> dtoList.add(ItemMapper.toItemDtoGet(item)));
+        findedList.remove(null);// добавляются нули (изменяется размер) из searchByName поэтому надо удалить;
+        findedList.forEach(item -> dtoList.add(ItemMapper.toItemDto(item)));
         return dtoList;
     }
 
     public Item searchByName(String text, Item item) {
-        String[] splitName = item.getName().toLowerCase().split(" ");
-        for (String s : splitName) {
-            if (s.contains(text.toLowerCase()) && item.getAvailable()) {
+            if ((item.getName().toLowerCase().contains(text.toLowerCase())
+                || item.getDescription().toLowerCase().contains(text.toLowerCase()))
+                    && item.getAvailable()) {
                 return item;
             }
-        }
-        String[] splitDescrption = item.getDescription().toLowerCase().split(" ");
-        for (String s : splitDescrption) {
-            if (s.contains(text.toLowerCase()) && item.getAvailable()) {
-                return item;
-            }
-        }
         return null;
     }
 

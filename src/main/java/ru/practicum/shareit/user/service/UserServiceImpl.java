@@ -3,7 +3,7 @@ package ru.practicum.shareit.user.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.user.dto.UserDtoCreate;
-import ru.practicum.shareit.user.dto.UserDtoGet;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserDtoPatch;
 import ru.practicum.shareit.user.dto.UserMapper;
 import ru.practicum.shareit.user.model.User;
@@ -22,31 +22,31 @@ public class UserServiceImpl implements UserService {
         this.storage = storage;
     }
 
-    public UserDtoCreate create(UserDtoCreate userDtoCreate) {
+    public UserDto create(UserDtoCreate userDtoCreate) {
         User user = UserMapper.fromUserDtoCreate(userDtoCreate);
-        return UserMapper.toUserDtoCreate(storage.create(user));
+        return UserMapper.toUserDto(storage.create(user));
     }
 
     @Override
-    public UserDtoGet get(Integer id) {
-        return UserMapper.toUserDtoGet(storage.get(id));
+    public UserDto get(Long id) {
+        return UserMapper.toUserDto(storage.get(id));
     }
 
     @Override
-    public UserDtoPatch patch(Integer id, UserDtoPatch userDtoPatch) {
+    public UserDto patch(Long id, UserDtoPatch userDtoPatch) {
         User user = UserMapper.fromUserDtoPatch(userDtoPatch);
-        return UserMapper.toUserDtoPatch(storage.patch(id, user));
+        return UserMapper.toUserDto(storage.patch(id, user));
     }
 
     @Override
-    public UserDtoGet delete(Integer id) {
-        return UserMapper.toUserDtoGet(storage.delete(id));
+    public UserDto delete(Long id) {
+        return UserMapper.toUserDto(storage.delete(id));
     }
 
     @Override
-    public Collection<UserDtoGet> getAll() {
-        Collection<UserDtoGet> collection = new LinkedList<>();
-        storage.getAll().forEach(user -> collection.add(UserMapper.toUserDtoGet(user)));
+    public Collection<UserDto> getAll() {
+        Collection<UserDto> collection = new LinkedList<>();
+        storage.getAll().forEach(user -> collection.add(UserMapper.toUserDto(user)));
         return collection;
     }
 }
