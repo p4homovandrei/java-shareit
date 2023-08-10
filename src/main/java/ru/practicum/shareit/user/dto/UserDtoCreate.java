@@ -1,7 +1,5 @@
 package ru.practicum.shareit.user.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
