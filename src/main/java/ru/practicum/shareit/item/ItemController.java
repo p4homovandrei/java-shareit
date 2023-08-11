@@ -33,7 +33,7 @@ public class ItemController {
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto patch(@RequestBody ItemDtoPatch itemDtoPatch, @RequestHeader(OWNER) String owner,
+    public ItemDto patch(@Valid @RequestBody ItemDtoPatch itemDtoPatch, @RequestHeader(OWNER) String owner,
                               @PathVariable("itemId") Long itemId) {
         return itemService.patch(itemDtoPatch, owner, itemId);
     }

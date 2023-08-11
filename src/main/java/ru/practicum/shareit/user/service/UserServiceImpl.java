@@ -15,7 +15,7 @@ import java.util.LinkedList;
 @Service
 public class UserServiceImpl implements UserService {
 
-    UserStorage storage;
+    private UserStorage storage;
 
     @Autowired
     public UserServiceImpl(UserStorage storage) {

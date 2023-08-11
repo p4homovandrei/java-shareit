@@ -72,19 +72,20 @@ public class ItemServiceImpl implements ItemService {
         if (text.isBlank()) {
             return dtoList;
         }
-        itemStorage.getAll().forEach(item -> findedList.add(searchByName(text, item)));
-        findedList.remove(null);// добавляются нули (изменяется размер) из searchByName поэтому надо удалить;
+        itemStorage.getAll().forEach(item -> {
+            if (isFindedName(text, item)) findedList.add(item);
+        });
         findedList.forEach(item -> dtoList.add(ItemMapper.toItemDto(item)));
         return dtoList;
     }
 
-    public Item searchByName(String text, Item item) {
-            if ((item.getName().toLowerCase().contains(text.toLowerCase())
+    public boolean isFindedName(String text, Item item) {
+        if ((item.getName().toLowerCase().contains(text.toLowerCase())
                 || item.getDescription().toLowerCase().contains(text.toLowerCase()))
-                    && item.getAvailable()) {
-                return item;
-            }
-        return null;
+                && item.getAvailable()) {
+            return true;
+        }
+        return false;
     }
 
     private void checkOwner(String owner) {
