@@ -2,8 +2,11 @@ package ru.practicum.shareit.item.dto;
 
 import lombok.Data;
 
+/**
+ * TODO Sprint add-controllers.
+ */
 @Data
-public class ItemDto {
+public class ItemDtoPatch {
 
     private Long id;
 
@@ -13,7 +16,7 @@ public class ItemDto {
 
     private Boolean available;
 
-    public ItemDto(Long id, String name, String description, Boolean available) {
+    public ItemDtoPatch(Long id, String name, String description, Boolean available) {
         this.id = id;
         this.name = name;
         this.description = description;
