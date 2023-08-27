@@ -3,7 +3,7 @@ package ru.practicum.shareit.item.storage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.services.NoFoundException;
+import ru.practicum.shareit.services.Exceptions.NoFoundException;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -49,10 +49,10 @@ public class InMemoryItemStorage implements ItemStorage {
     }
 
     @Override
-    public List<Item> getAllByOwner(String owner) {
+    public List<Item> getAllByOwner(Long owner) {
         List<Item> list = new LinkedList<Item>();
         for (Item item : db.values()) {
-            if (item.getOwner().getId().equals(Long.valueOf(owner))) {
+            if (item.getOwner().equals(Long.valueOf(owner))) {
                 list.add(item);
             }
         }

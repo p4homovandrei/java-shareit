@@ -1,4 +1,4 @@
-package ru.practicum.shareit.services;
+package ru.practicum.shareit.services.Exceptions;
 
 public class NoArgException extends RuntimeException {
     public NoArgException(String message) {

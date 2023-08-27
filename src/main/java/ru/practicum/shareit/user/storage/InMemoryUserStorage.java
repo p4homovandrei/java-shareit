@@ -2,8 +2,8 @@ package ru.practicum.shareit.user.storage;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.practicum.shareit.services.DuplicateException;
-import ru.practicum.shareit.services.NoFoundException;
+import ru.practicum.shareit.services.Exceptions.DuplicateException;
+import ru.practicum.shareit.services.Exceptions.NoFoundException;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.Collection;

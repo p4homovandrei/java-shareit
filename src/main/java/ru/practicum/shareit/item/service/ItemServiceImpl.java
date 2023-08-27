@@ -8,8 +8,8 @@ import ru.practicum.shareit.item.dto.ItemDtoPatch;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemStorage;
-import ru.practicum.shareit.services.NoArgException;
-import ru.practicum.shareit.services.NoFoundException;
+import ru.practicum.shareit.services.Exceptions.NoArgException;
+import ru.practicum.shareit.services.Exceptions.NoFoundException;
 import ru.practicum.shareit.user.dto.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
@@ -30,19 +30,19 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto create(ItemDtoCreate itemDtoCreate, String owner) {
+    public ItemDto create(ItemDtoCreate itemDtoCreate, Long owner) {
         checkOwner(owner);
         Item item = ItemMapper.fromItemDtoCreate(itemDtoCreate);
-        User user = UserMapper.fromUserDto(userService.get(Long.valueOf(owner)));
-        item.setOwner(user);
+        User user = UserMapper.fromUserDto(userService.get(owner));
+        item.setOwner(user.getId());
         return ItemMapper.toItemDto(itemStorage.create(item));
     }
 
     @Override
-    public ItemDto patch(ItemDtoPatch itemDtoPatch, String owner, Long itemId) {
+    public ItemDto patch(ItemDtoPatch itemDtoPatch, Long owner, Long itemId) {
         checkOwner(owner);
         Item item = ItemMapper.fromItemDtoPatch(itemDtoPatch);
-        if (itemStorage.get(itemId).getOwner().getId().equals(Long.valueOf(owner))) {
+        if (itemStorage.get(itemId).getOwner().equals(owner)) {
             return ItemMapper.toItemDto(itemStorage.patch(item, itemId));
         } else throw new NoFoundException("Владелец предмета не совпадает с ID запроса на патч");
     }
@@ -54,7 +54,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDto> getAllByOwner(String owner) {
+    public List<ItemDto> getAllByOwner(Long owner) {
         List<Item> list = itemStorage.getAllByOwner(owner);
         List<ItemDto> listDto = new LinkedList<>();
         if (!list.isEmpty()) {
@@ -88,8 +88,8 @@ public class ItemServiceImpl implements ItemService {
         return false;
     }
 
-    private void checkOwner(String owner) {
-        if (owner.isEmpty()) {
+    private void checkOwner(Long owner) {
+        if (owner.equals(null)) {
             throw new NoArgException("Не указан владелец предмета ");
         }
     }

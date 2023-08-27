@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface ItemService {
 
-    ItemDto create(ItemDtoCreate item, String owner);
+    ItemDto create(ItemDtoCreate item, Long owner);
 
-    ItemDto patch(ItemDtoPatch item, String owner, Long integer);
+    ItemDto patch(ItemDtoPatch item, Long owner, Long integer);
 
     ItemDto get(Long valueOf);
 
-    List<ItemDto> getAllByOwner(String owner);
+    List<ItemDto> getAllByOwner(Long owner);
 
     List<ItemDto> search(String text);
 }

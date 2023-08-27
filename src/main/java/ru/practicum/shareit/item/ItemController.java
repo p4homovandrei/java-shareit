@@ -28,12 +28,12 @@ public class ItemController {
 
     @PostMapping
     public ItemDto create(@Valid @RequestBody ItemDtoCreate itemDtoCreate,
-                                @RequestHeader(OWNER) String owner) {
+                                @RequestHeader(OWNER) Long owner) {
         return itemService.create(itemDtoCreate, owner);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto patch(@Valid @RequestBody ItemDtoPatch itemDtoPatch, @RequestHeader(OWNER) String owner,
+    public ItemDto patch(@Valid @RequestBody ItemDtoPatch itemDtoPatch, @RequestHeader(OWNER) Long owner,
                               @PathVariable("itemId") Long itemId) {
         return itemService.patch(itemDtoPatch, owner, itemId);
     }
@@ -44,7 +44,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDto> getAll(@RequestHeader(OWNER) String owner) {
+    public List<ItemDto> getAll(@RequestHeader(OWNER) Long owner) {
         return itemService.getAllByOwner(owner);
     }
 

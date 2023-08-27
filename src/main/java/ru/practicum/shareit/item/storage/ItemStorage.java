@@ -11,7 +11,7 @@ public interface ItemStorage {
 
     Item get(Long itemId);
 
-    List<Item> getAllByOwner(String owner);
+    List<Item> getAllByOwner(Long owner);
 
     List<Item> getAll();
 }
